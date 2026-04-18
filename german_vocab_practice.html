@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deutsch Üben – German Vocabulary Practice</title>
+<style>
+  :root {
+    --navy: #1a2744;
+    --navy2: #2c3e6b;
+    --amber: #e8a000;
+    --amber2: #f0b420;
+    --cream: #fdf8f0;
+    --cream2: #f5ede0;
+    --green: #1e6e40;
+    --green-bg: #e4f5ec;
+    --red: #b83030;
+    --red-bg: #fceaea;
+    --orange-bg: #fff4df;
+    --orange: #a06000;
+    --border: #ddd0bb;
+    --muted: #7a7060;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+    min-height: 100vh;
+    font-size: 16px;
+  }
+
+  /* ── Header ── */
+  .hdr {
+    background: var(--navy);
+    color: #fff;
+    text-align: center;
+    padding: 32px 20px 28px;
+  }
+  .hdr-flag { font-size: 48px; line-height: 1; margin-bottom: 10px; }
+  .hdr h1 {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .hdr p { font-size: 16px; opacity: 0.7; font-weight: 600; }
+
+  /* ── Container ── */
+  .wrap { max-width: 660px; margin: 0 auto; padding: 30px 18px 60px; }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-block;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    padding: 13px 30px;
+    cursor: pointer;
+    transition: filter 0.15s, transform 0.1s;
+    line-height: 1;
+  }
+  .btn:hover { filter: brightness(1.08); }
+  .btn:active { transform: scale(0.97); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; filter: none; transform: none; }
+  .btn-navy { background: var(--navy); color: #fff; }
+  .btn-amber { background: var(--amber2); color: var(--navy); }
+  .btn-back {
+    background: var(--cream2);
+    color: var(--navy);
+    border: 2px solid var(--border);
+    font-size: 14px;
+    padding: 9px 18px;
+    border-radius: 9px;
+  }
+
+  /* ── Home cards ── */
+  .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 26px; }
+  .mode-card {
+    background: var(--white);
+    border-radius: 18px;
+    border: 2px solid var(--border);
+    padding: 28px 18px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 3px 12px rgba(26,39,68,0.08);
+  }
+  .mode-card:hover {
+    border-color: var(--amber);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(26,39,68,0.14);
+  }
+  .mode-card .ico { font-size: 44px; margin-bottom: 12px; line-height: 1; }
+  .mode-card h2 { font-size: 18px; font-weight: 800; margin-bottom: 7px; color: var(--navy); }
+  .mode-card p { font-size: 14px; color: var(--muted); font-weight: 600; line-height: 1.4; }
+
+  .topics-lbl { font-size: 14px; color: var(--muted); font-weight: 700; text-align: center; margin-bottom: 10px; }
+  .topics-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .pill {
+    font-size: 13px;
+    font-weight: 700;
+    padding: 5px 13px;
+    border-radius: 99px;
+    border: 2px solid;
+  }
+  .pill-f { background: #ede8ff; color: #4530a0; border-color: #8870d0; }
+  .pill-a { background: #e4f5ec; color: #1e6e40; border-color: #50aa70; }
+  .pill-s { background: #e0eaff; color: #1a3fa0; border-color: #5070d0; }
+  .pill-c { background: #fff3dc; color: #8a5500; border-color: #d09030; }
+
+  /* ── Top bar ── */
+  .topbar { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+  .topbar-title { font-size: 18px; font-weight: 800; }
+  .topbar-hint { margin-left: auto; font-size: 13px; color: var(--muted); font-weight: 600; }
+
+  /* ── Score banner ── */
+  .score-box {
+    border-radius: 16px;
+    padding: 26px 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    border: 2.5px solid;
+  }
+  .score-box.great { background: var(--green-bg); border-color: #50aa70; }
+  .score-box.ok    { background: var(--orange-bg); border-color: #d09030; }
+  .score-box.low   { background: var(--red-bg);    border-color: #e07070; }
+  .score-num { font-size: 48px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+  .score-box.great .score-num { color: var(--green); }
+  .score-box.ok    .score-num { color: var(--orange); }
+  .score-box.low   .score-num { color: var(--red); }
+  .score-msg { font-size: 16px; font-weight: 700; color: var(--muted); margin-bottom: 18px; }
+
+  /* ── Write question rows ── */
+  .q-row {
+    background: var(--white);
+    border-radius: 14px;
+    border: 2px solid var(--border);
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    transition: border-color 0.2s, background 0.2s;
+    box-shadow: 0 2px 8px rgba(26,39,68,0.06);
+  }
+  .q-row.correct { border-color: #50aa70; background: var(--green-bg); }
+  .q-row.wrong   { border-color: #e07070; background: var(--red-bg); }
+  .q-top { display: flex; align-items: center; gap: 12px; margin-bottom: 11px; }
+  .q-num {
+    background: var(--navy);
+    color: #fff;
+    border-radius: 50%;
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .q-de { font-size: 20px; font-weight: 800; color: var(--navy); }
+  .q-bot { display: flex; align-items: center; gap: 10px; }
+  .q-inp {
+    flex: 1;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px 14px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    background: var(--cream);
+    color: var(--navy);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .q-inp:focus { border-color: var(--amber); background: var(--white); }
+  .q-inp:disabled { background: #eee; color: #888; }
+  .q-tick { font-size: 24px; flex-shrink: 0; }
+  .q-ans { margin-top: 7px; font-size: 14px; font-weight: 700; color: var(--green); }
+
+  /* ── Match mode ── */
+  .match-hint { font-size: 14px; font-weight: 700; color: var(--muted); text-align: center; margin-bottom: 16px; min-height: 22px; }
+  .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 22px; }
+  .match-col { display: flex; flex-direction: column; gap: 7px; }
+  .match-hdr { font-size: 12px; font-weight: 800; color: var(--muted); text-align: center; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+  .mw {
+    padding: 12px 10px;
+    border-radius: 11px;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    border: 2px solid var(--border);
+    background: var(--cream2);
+    color: var(--navy);
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+    user-select: none;
+    line-height: 1.2;
+  }
+  .mw:hover { border-color: var(--navy2); }
+  .mw.sel { border-color: var(--navy); background: var(--navy); color: #fff; }
+  .mw.cor { border-color: #50aa70; background: var(--green-bg); color: var(--green); }
+  .mw.wrg { border-color: #e07070; background: var(--red-bg); color: var(--red); }
+
+  .ctr { text-align: center; }
+  .mt20 { margin-top: 20px; }
+  .mt28 { margin-top: 28px; }
+  .sep { border: none; border-top: 2px solid var(--cream2); margin: 20px 0; }
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-flag">🇩🇪</div>
+  <h1>Deutsch Üben</h1>
+  <p>German vocabulary practice &middot; 12 words per round</p>
+</div>
+
+<div class="wrap" id="app"></div>
+
+<script>
+const VOCAB = [
+  {de:"die Mutter",en:"mother",t:"f"},{de:"der Vater",en:"father",t:"f"},
+  {de:"die Schwester",en:"sister",t:"f"},{de:"der Bruder",en:"brother",t:"f"},
+  {de:"die Großmutter",en:"grandmother",t:"f"},{de:"der Großvater",en:"grandfather",t:"f"},
+  {de:"die Tante",en:"aunt",t:"f"},{de:"der Onkel",en:"uncle",t:"f"},
+  {de:"die Cousine",en:"cousin",t:"f"},{de:"die Eltern",en:"parents",t:"f"},
+  {de:"der Sohn",en:"son",t:"f"},{de:"die Tochter",en:"daughter",t:"f"},
+  {de:"das Kind",en:"child",t:"f"},{de:"die Geschwister",en:"siblings",t:"f"},
+  {de:"groß",en:"tall",t:"a"},{de:"klein",en:"short",t:"a"},
+  {de:"schlank",en:"slim",t:"a"},{de:"dick",en:"fat",t:"a"},
+  {de:"schön",en:"beautiful",t:"a"},{de:"hässlich",en:"ugly",t:"a"},
+  {de:"jung",en:"young",t:"a"},{de:"alt",en:"old",t:"a"},
+  {de:"blond",en:"blonde",t:"a"},{de:"lockig",en:"curly",t:"a"},
+  {de:"glatt",en:"straight",t:"a"},{de:"die Augen",en:"eyes",t:"a"},
+  {de:"die Haare",en:"hair",t:"a"},{de:"rothaarig",en:"red-haired",t:"a"},
+  {de:"Mathematik",en:"Maths",t:"s"},{de:"Englisch",en:"English",t:"s"},
+  {de:"Deutsch",en:"German",t:"s"},{de:"Naturwissenschaften",en:"Science",t:"s"},
+  {de:"Geschichte",en:"History",t:"s"},{de:"Erdkunde",en:"Geography",t:"s"},
+  {de:"Kunst",en:"Art",t:"s"},{de:"Musik",en:"Music",t:"s"},
+  {de:"Sport",en:"PE",t:"s"},{de:"Informatik",en:"Computing",t:"s"},
+  {de:"Französisch",en:"French",t:"s"},{de:"Religion",en:"RE",t:"s"},
+  {de:"Biologie",en:"Biology",t:"s"},{de:"Chemie",en:"Chemistry",t:"s"},
+  {de:"das Hemd",en:"shirt",t:"c"},{de:"die Hose",en:"trousers",t:"c"},
+  {de:"der Rock",en:"skirt",t:"c"},{de:"das Kleid",en:"dress",t:"c"},
+  {de:"die Jacke",en:"jacket",t:"c"},{de:"der Mantel",en:"coat",t:"c"},
+  {de:"die Schuhe",en:"shoes",t:"c"},{de:"die Socken",en:"socks",t:"c"},
+  {de:"der Pullover",en:"jumper",t:"c"},{de:"die Mütze",en:"hat",t:"c"},
+  {de:"das T-Shirt",en:"T-shirt",t:"c"},{de:"die Jeans",en:"jeans",t:"c"},
+  {de:"der Gürtel",en:"belt",t:"c"},{de:"die Handschuhe",en:"gloves",t:"c"},
+];
+
+const TL = {f:"Family",a:"Appearance",s:"School",c:"Clothes"};
+const TC = {f:"pill-f",a:"pill-a",s:"pill-s",c:"pill-c"};
+
+const PC = ["#5540c0","#1a8050","#1a50b0","#b06010","#b02020",
+            "#106080","#801060","#408020","#203080","#804020","#106050","#501080"];
+
+let S = {screen:"home",questions:[],answers:{},checked:false,matchRight:[],selLeft:null,pairs:[]};
+
+function shuffle(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
+function getQs(){return shuffle(VOCAB).slice(0,12);}
+function set(p){Object.assign(S,p);render();}
+function ok(q,a){const v=(a||"").trim().toLowerCase();return v&&q.en.toLowerCase().split("/").map(s=>s.trim()).includes(v);}
+function pill(t){return `<span class="pill ${TC[t]}">${TL[t]}</span>`;}
+
+function renderHome(){
+  return `
+  <div class="home-grid">
+    <div class="mode-card" id="bw">
+      <div class="ico">✏️</div>
+      <h2>Write the answer</h2>
+      <p>Type the English meaning for each German word</p>
+    </div>
+    <div class="mode-card" id="bm">
+      <div class="ico">🔗</div>
+      <h2>Match the words</h2>
+      <p>Link German words to their English meanings</p>
+    </div>
+  </div>
+  <div class="topics-lbl">Topics covered</div>
+  <div class="topics-row">
+    <span class="pill pill-f">👨‍👩‍👧 Family</span>
+    <span class="pill pill-a">👀 Appearance</span>
+    <span class="pill pill-s">📚 School</span>
+    <span class="pill pill-c">👕 Clothes</span>
+  </div>`;}
+
+function renderWrite(){
+  const {questions,answers,checked}=S;
+  let score=0;
+  if(checked) questions.forEach((q,i)=>{if(ok(q,answers[i]||""))score++;});
+  const cls=score>=10?"great":score>=7?"ok":"low";
+  const msg=score===12?"Ausgezeichnet! Perfect score! 🎉":score>=10?"Sehr gut! Great work! ⭐":score>=7?"Gut gemacht! Keep it up! 💪":"Keep practising — du schaffst das! 📖";
+  return `
+  <div class="topbar">
+    <button class="btn btn-back" id="bh">← Back</button>
+    <span class="topbar-title">Write the answer</span>
+    <span class="topbar-hint">German → English</span>
+  </div>
+  ${checked?`<div class="score-box ${cls}">
+    <div class="score-num">${score} / 12</div>
+    <div class="score-msg">${msg}</div>
+    <button class="btn btn-navy" id="br">New words →</button>
+  </div>`:""}
+  ${questions.map((q,i)=>{
+    const a=answers[i]||"";const c=checked?ok(q,a):null;
+    return `<div class="q-row${checked?(c?" correct":" wrong"):""}">
+      <div class="q-top">
+        <div class="q-num">${i+1}</div>
+        <span class="q-de">${q.de}</span>
+        <span style="margin-left:auto">${pill(q.t)}</span>
+      </div>
+      <div class="q-bot">
+        <input class="q-inp" id="a${i}" type="text" value="${a.replace(/"/g,"&quot;")}"
+          placeholder="English meaning…" data-i="${i}" ${checked?"disabled":""}>
+        ${checked?`<span class="q-tick">${c?"✅":"❌"}</span>`:""}
+      </div>
+      ${checked&&!c?`<div class="q-ans">✓ ${q.en}</div>`:""}
+    </div>`;
+  }).join("")}
+  ${!checked
+    ?`<div class="ctr mt28"><button class="btn btn-amber" id="bc">Check answers</button></div>`
+    :`<div class="ctr mt20"><button class="btn btn-navy" id="br">New words →</button></div>`}`;}
+
+function renderMatch(){
+  const {questions,matchRight,selLeft,pairs,checked}=S;
+  const pm={};pairs.forEach((p,i)=>{pm[`L${p.l}`]=i;pm[`R${p.r}`]=i;});
+  let score=0;
+  if(checked) pairs.forEach(p=>{if(matchRight[p.r].orig===p.l)score++;});
+  const cls=score>=10?"great":score>=7?"ok":"low";
+  const msg=score===12?"Ausgezeichnet! 🎉":score>=10?"Sehr gut! ⭐":score>=7?"Gut gemacht! 💪":"Keep practising! 📖";
+
+  function lcls(i){
+    if(i===selLeft)return "mw sel";
+    if(`L${i}`in pm){if(checked){const p=pairs[pm[`L${i}`]];return matchRight[p.r].orig===i?"mw cor":"mw wrg";}return "mw paired";}
+    return "mw";
+  }
+  function rcls(i){
+    if(`R${i}`in pm){if(checked){const p=pairs[pm[`R${i}`]];return matchRight[i].orig===p.l?"mw cor":"mw wrg";}return "mw paired";}
+    return "mw";
+  }
+  function ps(key){
+    if(key in pm&&!checked){const c=PC[pm[key]%PC.length];return ` style="border-color:${c};background:${c}18;color:${c}"`;}
+    return "";
+  }
+  const hint=selLeft!==null?`Word ${selLeft+1} selected — now click an English word`:pairs.length===12?"All matched! Click Check answers":`${pairs.length} of 12 matched`;
+  return `
+  <div class="topbar">
+    <button class="btn btn-back" id="bh">← Back</button>
+    <span class="topbar-title">Match the words</span>
+  </div>
+  ${checked?`<div class="score-box ${cls}">
+    <div class="score-num">${score} / 12</div>
+    <div class="score-msg">${msg}</div>
+    <button class="btn btn-navy" id="br">New words →</button>
+  </div>`:""}
+  <div class="match-hint">${hint}</div>
+  <div class="match-grid">
+    <div class="match-col">
+      <div class="match-hdr">Deutsch</div>
+      ${questions.map((q,i)=>`<div class="${lcls(i)}"${ps(`L${i}`)} data-l="${i}">${q.de}</div>`).join("")}
+    </div>
+    <div class="match-col">
+      <div class="match-hdr">English</div>
+      ${matchRight.map((w,i)=>`<div class="${rcls(i)}"${ps(`R${i}`)} data-r="${i}">${w.en}</div>`).join("")}
+    </div>
+  </div>
+  ${!checked
+    ?`<div class="ctr"><button class="btn btn-amber" id="bc" ${pairs.length<12?"disabled":""}>
+        ${pairs.length<12?`Check answers (${12-pairs.length} to go)`:"Check answers"}
+      </button></div>`
+    :`<div class="ctr"><button class="btn btn-navy" id="br">New words →</button></div>`}`;}
+
+function render(){
+  const app=document.getElementById("app");
+  if(S.screen==="home")  app.innerHTML=renderHome();
+  if(S.screen==="write") app.innerHTML=renderWrite();
+  if(S.screen==="match") app.innerHTML=renderMatch();
+  bind();
+}
+
+function bind(){
+  document.getElementById("bw")?.addEventListener("click",()=>set({screen:"write",questions:getQs(),answers:{},checked:false}));
+  document.getElementById("bm")?.addEventListener("click",()=>{
+    const qs=getQs();
+    set({screen:"match",questions:qs,matchRight:shuffle(qs.map((q,i)=>({en:q.en,orig:i}))),selLeft:null,pairs:[],checked:false});
+  });
+  document.getElementById("bh")?.addEventListener("click",()=>set({screen:"home"}));
+  document.getElementById("br")?.addEventListener("click",()=>set({screen:"home"}));
+  document.getElementById("bc")?.addEventListener("click",()=>{
+    if(S.screen==="write"){
+      const ans={};S.questions.forEach((_,i)=>{ans[i]=document.getElementById(`a${i}`)?.value||"";});
+      set({answers:ans,checked:true});
+    } else set({checked:true});
+  });
+  document.querySelectorAll(".q-inp").forEach(el=>{
+    el.addEventListener("input",e=>{S.answers[+e.target.dataset.i]=e.target.value;});
+    el.addEventListener("keydown",e=>{
+      if(e.key==="Enter"){const n=document.getElementById(`a${+el.dataset.i+1}`);if(n)n.focus();else document.getElementById("bc")?.focus();}
+    });
+  });
+  document.querySelectorAll("[data-l]").forEach(el=>{
+    el.addEventListener("click",()=>{
+      if(S.checked)return;
+      const i=+el.dataset.l;
+      const xi=S.pairs.findIndex(p=>p.l===i);
+      if(xi>=0){S.pairs.splice(xi,1);set({selLeft:i});return;}
+      set({selLeft:S.selLeft===i?null:i});
+    });
+  });
+  document.querySelectorAll("[data-r]").forEach(el=>{
+    el.addEventListener("click",()=>{
+      if(S.checked||S.selLeft===null)return;
+      const r=+el.dataset.r;
+      const np=S.pairs.filter(p=>p.l!==S.selLeft&&p.r!==r);
+      np.push({l:S.selLeft,r});
+      set({pairs:np,selLeft:null});
+    });
+  });
+}
+
+render();
+</script>
+</body>
+</html>
