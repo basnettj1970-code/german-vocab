@@ -5,220 +5,106 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Deutsch Üben – German Vocabulary Practice</title>
 <style>
-  :root {
-    --navy: #1a2744;
-    --navy2: #2c3e6b;
-    --amber: #e8a000;
-    --amber2: #f0b420;
-    --cream: #fdf8f0;
-    --cream2: #f5ede0;
-    --green: #1e6e40;
-    --green-bg: #e4f5ec;
-    --red: #b83030;
-    --red-bg: #fceaea;
-    --orange-bg: #fff4df;
-    --orange: #a06000;
-    --border: #ddd0bb;
-    --muted: #7a7060;
-    --white: #ffffff;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    background: var(--cream);
-    color: var(--navy);
-    min-height: 100vh;
-    font-size: 16px;
-  }
-
-  /* ── Header ── */
-  .hdr {
-    background: var(--navy);
-    color: #fff;
-    text-align: center;
-    padding: 32px 20px 28px;
-  }
-  .hdr-flag { font-size: 48px; line-height: 1; margin-bottom: 10px; }
-  .hdr h1 {
-    font-size: 36px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    margin-bottom: 6px;
-  }
-  .hdr p { font-size: 16px; opacity: 0.7; font-weight: 600; }
-
-  /* ── Container ── */
-  .wrap { max-width: 660px; margin: 0 auto; padding: 30px 18px 60px; }
-
-  /* ── Buttons ── */
-  .btn {
-    display: inline-block;
-    font-family: inherit;
-    font-weight: 700;
-    font-size: 16px;
-    border: none;
-    border-radius: 12px;
-    padding: 13px 30px;
-    cursor: pointer;
-    transition: filter 0.15s, transform 0.1s;
-    line-height: 1;
-  }
-  .btn:hover { filter: brightness(1.08); }
-  .btn:active { transform: scale(0.97); }
-  .btn:disabled { opacity: 0.4; cursor: not-allowed; filter: none; transform: none; }
-  .btn-navy { background: var(--navy); color: #fff; }
-  .btn-amber { background: var(--amber2); color: var(--navy); }
-  .btn-back {
-    background: var(--cream2);
-    color: var(--navy);
-    border: 2px solid var(--border);
-    font-size: 14px;
-    padding: 9px 18px;
-    border-radius: 9px;
-  }
-
-  /* ── Home cards ── */
-  .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 26px; }
-  .mode-card {
-    background: var(--white);
-    border-radius: 18px;
-    border: 2px solid var(--border);
-    padding: 28px 18px 24px;
-    text-align: center;
-    cursor: pointer;
-    transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
-    box-shadow: 0 3px 12px rgba(26,39,68,0.08);
-  }
-  .mode-card:hover {
-    border-color: var(--amber);
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(26,39,68,0.14);
-  }
-  .mode-card .ico { font-size: 44px; margin-bottom: 12px; line-height: 1; }
-  .mode-card h2 { font-size: 18px; font-weight: 800; margin-bottom: 7px; color: var(--navy); }
-  .mode-card p { font-size: 14px; color: var(--muted); font-weight: 600; line-height: 1.4; }
-
-  .topics-lbl { font-size: 14px; color: var(--muted); font-weight: 700; text-align: center; margin-bottom: 10px; }
-  .topics-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
-  .pill {
-    font-size: 13px;
-    font-weight: 700;
-    padding: 5px 13px;
-    border-radius: 99px;
-    border: 2px solid;
-  }
-  .pill-f { background: #ede8ff; color: #4530a0; border-color: #8870d0; }
-  .pill-a { background: #e4f5ec; color: #1e6e40; border-color: #50aa70; }
-  .pill-s { background: #e0eaff; color: #1a3fa0; border-color: #5070d0; }
-  .pill-c { background: #fff3dc; color: #8a5500; border-color: #d09030; }
-
-  /* ── Top bar ── */
-  .topbar { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
-  .topbar-title { font-size: 18px; font-weight: 800; }
-  .topbar-hint { margin-left: auto; font-size: 13px; color: var(--muted); font-weight: 600; }
-
-  /* ── Score banner ── */
-  .score-box {
-    border-radius: 16px;
-    padding: 26px 20px;
-    text-align: center;
-    margin-bottom: 20px;
-    border: 2.5px solid;
-  }
-  .score-box.great { background: var(--green-bg); border-color: #50aa70; }
-  .score-box.ok    { background: var(--orange-bg); border-color: #d09030; }
-  .score-box.low   { background: var(--red-bg);    border-color: #e07070; }
-  .score-num { font-size: 48px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
-  .score-box.great .score-num { color: var(--green); }
-  .score-box.ok    .score-num { color: var(--orange); }
-  .score-box.low   .score-num { color: var(--red); }
-  .score-msg { font-size: 16px; font-weight: 700; color: var(--muted); margin-bottom: 18px; }
-
-  /* ── Write question rows ── */
-  .q-row {
-    background: var(--white);
-    border-radius: 14px;
-    border: 2px solid var(--border);
-    padding: 16px 18px;
-    margin-bottom: 10px;
-    transition: border-color 0.2s, background 0.2s;
-    box-shadow: 0 2px 8px rgba(26,39,68,0.06);
-  }
-  .q-row.correct { border-color: #50aa70; background: var(--green-bg); }
-  .q-row.wrong   { border-color: #e07070; background: var(--red-bg); }
-  .q-top { display: flex; align-items: center; gap: 12px; margin-bottom: 11px; }
-  .q-num {
-    background: var(--navy);
-    color: #fff;
-    border-radius: 50%;
-    width: 30px; height: 30px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 800;
-    flex-shrink: 0;
-  }
-  .q-de { font-size: 20px; font-weight: 800; color: var(--navy); }
-  .q-bot { display: flex; align-items: center; gap: 10px; }
-  .q-inp {
-    flex: 1;
-    font-family: inherit;
-    font-size: 16px;
-    font-weight: 600;
-    padding: 10px 14px;
-    border: 2px solid var(--border);
-    border-radius: 10px;
-    background: var(--cream);
-    color: var(--navy);
-    outline: none;
-    transition: border-color 0.15s;
-  }
-  .q-inp:focus { border-color: var(--amber); background: var(--white); }
-  .q-inp:disabled { background: #eee; color: #888; }
-  .q-tick { font-size: 24px; flex-shrink: 0; }
-  .q-ans { margin-top: 7px; font-size: 14px; font-weight: 700; color: var(--green); }
-
-  /* ── Match mode ── */
-  .match-hint { font-size: 14px; font-weight: 700; color: var(--muted); text-align: center; margin-bottom: 16px; min-height: 22px; }
-  .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 22px; }
-  .match-col { display: flex; flex-direction: column; gap: 7px; }
-  .match-hdr { font-size: 12px; font-weight: 800; color: var(--muted); text-align: center; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
-  .mw {
-    padding: 12px 10px;
-    border-radius: 11px;
-    font-size: 15px;
-    font-weight: 700;
-    text-align: center;
-    cursor: pointer;
-    border: 2px solid var(--border);
-    background: var(--cream2);
-    color: var(--navy);
-    transition: border-color 0.15s, background 0.15s, color 0.15s;
-    user-select: none;
-    line-height: 1.2;
-  }
-  .mw:hover { border-color: var(--navy2); }
-  .mw.sel { border-color: var(--navy); background: var(--navy); color: #fff; }
-  .mw.cor { border-color: #50aa70; background: var(--green-bg); color: var(--green); }
-  .mw.wrg { border-color: #e07070; background: var(--red-bg); color: var(--red); }
-
-  .ctr { text-align: center; }
-  .mt20 { margin-top: 20px; }
-  .mt28 { margin-top: 28px; }
-  .sep { border: none; border-top: 2px solid var(--cream2); margin: 20px 0; }
+:root {
+  --navy:#1a2744; --navy2:#2c3e6b; --amber:#f0b420;
+  --cream:#fdf8f0; --cream2:#f0e8d8;
+  --green:#1a6e3a; --green-bg:#e4f5ec;
+  --red:#b83030; --red-bg:#fceaea;
+  --orange:#9a5800; --orange-bg:#fff4df;
+  --muted:#7a7060; --border:#ddd0bb; --white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;font-size:16px}
+.hdr{background:var(--navy);color:#fff;text-align:center;padding:30px 20px 26px}
+.hdr .flag{font-size:44px;margin-bottom:8px}
+.hdr h1{font-size:34px;font-weight:800;letter-spacing:.5px;margin-bottom:5px}
+.hdr p{font-size:15px;opacity:.7;font-weight:600}
+.wrap{max-width:680px;margin:0 auto;padding:28px 16px 60px}
+.btn{display:inline-block;font-family:inherit;font-weight:700;border:none;border-radius:11px;cursor:pointer;transition:filter .15s,transform .1s;line-height:1}
+.btn:hover{filter:brightness(1.07)}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.4;cursor:not-allowed;filter:none;transform:none}
+.btn-navy{background:var(--navy);color:#fff;font-size:15px;padding:12px 26px}
+.btn-amber{background:var(--amber);color:var(--navy);font-size:15px;padding:12px 26px}
+.btn-back{background:var(--cream2);color:var(--navy);border:2px solid var(--border);font-size:13px;padding:8px 16px;border-radius:9px}
+.tog{font-family:inherit;font-size:13px;font-weight:700;padding:6px 14px;border-radius:8px;cursor:pointer;border:2px solid var(--border);background:transparent;color:var(--muted);transition:all .15s}
+.tog.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;border:1.5px solid;white-space:nowrap}
+.pf{background:#ede8ff;color:#4530a0;border-color:#8870d0}
+.pa{background:#e4f5ec;color:#1e6e40;border-color:#50aa70}
+.ps{background:#e0eaff;color:#1a3fa0;border-color:#5070d0}
+.pc{background:#fff3dc;color:#8a5500;border-color:#d09030}
+.pw{background:#e0f0ff;color:#005080;border-color:#4090c0}
+.pn{background:#e0fff8;color:#006048;border-color:#30b090}
+.pch{background:#ffe0ef;color:#900045;border-color:#d05080}
+.pan{background:#fff0e0;color:#7a3800;border-color:#c07030}
+.ph{background:#e8ffe0;color:#1a6000;border-color:#50a030}
+.pho{background:#f0f0ff;color:#303070;border-color:#7070b0}
+.hgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+.mcard{background:var(--white);border-radius:16px;border:2px solid var(--border);padding:24px 16px 22px;text-align:center;cursor:pointer;transition:border-color .15s,transform .15s,box-shadow .15s;box-shadow:0 3px 12px rgba(26,39,68,.09)}
+.mcard:hover{border-color:var(--amber);transform:translateY(-3px);box-shadow:0 8px 24px rgba(26,39,68,.14)}
+.mcard .ico{font-size:40px;margin-bottom:10px}
+.mcard h2{font-size:16px;font-weight:800;margin-bottom:6px}
+.mcard p{font-size:13px;color:var(--muted);font-weight:600;line-height:1.4}
+.tlbl{font-size:13px;font-weight:700;color:var(--muted);text-align:center;margin-bottom:10px}
+.trow{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.topbar-title{font-size:17px;font-weight:800}
+.abar{background:var(--white);border:2px solid var(--border);border-radius:12px;padding:10px 14px;margin-bottom:16px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.abar span{font-size:13px;font-weight:700;color:var(--muted)}
+.abtn{font-family:inherit;font-size:16px;font-weight:800;padding:5px 11px;border-radius:7px;border:2px solid var(--border);background:var(--cream2);color:var(--navy);cursor:pointer;transition:background .1s,border-color .1s}
+.abtn:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.sbox{border-radius:16px;padding:24px 20px;text-align:center;margin-bottom:20px;border:2.5px solid}
+.sbox.great{background:var(--green-bg);border-color:#50aa70}
+.sbox.ok{background:var(--orange-bg);border-color:#d09030}
+.sbox.low{background:var(--red-bg);border-color:#e07070}
+.snum{font-size:44px;font-weight:800;margin-bottom:5px}
+.sbox.great .snum{color:var(--green)}
+.sbox.ok .snum{color:var(--orange)}
+.sbox.low .snum{color:var(--red)}
+.smsg{font-size:15px;font-weight:700;color:var(--muted);margin-bottom:5px}
+.sbr{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:16px}
+.rbox{background:var(--orange-bg);border:2px solid #d09030;border-radius:14px;padding:16px 18px;margin-bottom:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.rbox-score{font-size:22px;font-weight:800;color:var(--orange);flex-shrink:0}
+.rbox-msg{font-size:14px;font-weight:700;color:var(--orange)}
+.qrow{background:var(--white);border-radius:14px;border:2px solid var(--border);padding:15px 16px;margin-bottom:10px;box-shadow:0 2px 6px rgba(26,39,68,.07);transition:border-color .2s,background .2s}
+.qrow.correct{border-color:#50aa70;background:var(--green-bg)}
+.qrow.retry-ok{border-color:#d09030;background:var(--orange-bg)}
+.qrow.wrong{border-color:#e07070;background:var(--red-bg)}
+.qtop{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.qnum{background:var(--navy);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+.qword{font-size:19px;font-weight:800}
+.qtick{font-size:18px;font-weight:700}
+.qinp{width:100%;font-family:inherit;font-size:16px;font-weight:600;padding:10px 13px;border:2px solid var(--border);border-radius:10px;background:var(--cream);color:var(--navy);outline:none;transition:border-color .15s}
+.qinp:focus{border-color:var(--amber);background:#fff}
+.qinp:disabled{background:#eee;color:#888}
+.qans{margin-top:7px;font-size:14px;font-weight:700;color:var(--green)}
+.qrtry-lbl{margin:10px 0 5px;font-size:13px;font-weight:700;color:var(--muted)}
+.qrtry-note{margin-top:6px;font-size:13px;font-weight:600;color:var(--orange)}
+.sec-hdr{font-size:13px;font-weight:800;color:var(--muted);margin:20px 0 10px;text-transform:uppercase;letter-spacing:.05em}
+.mhint{font-size:14px;font-weight:700;color:var(--muted);text-align:center;margin-bottom:16px;min-height:20px}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.mcol{display:flex;flex-direction:column;gap:6px}
+.mhdr{font-size:11px;font-weight:800;color:var(--muted);text-align:center;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.mw{padding:11px 10px;border-radius:10px;font-size:14px;font-weight:700;text-align:center;cursor:pointer;border:2px solid var(--border);background:var(--cream2);color:var(--navy);transition:all .12s;user-select:none;line-height:1.3}
+.mw:hover{border-color:var(--navy2)}
+.mw.sel{border-color:var(--navy);background:var(--navy);color:#fff}
+.mw.cor{border-color:#50aa70;background:var(--green-bg);color:var(--green)}
+.mw.wrg{border-color:#e07070;background:var(--red-bg);color:var(--red)}
+.ctr{text-align:center}
+.mt16{margin-top:16px}
+.mt24{margin-top:24px}
 </style>
 </head>
 <body>
-
 <div class="hdr">
-  <div class="hdr-flag">🇩🇪</div>
+  <div class="flag">🇩🇪</div>
   <h1>Deutsch Üben</h1>
   <p>German vocabulary practice &middot; 12 words per round</p>
 </div>
-
 <div class="wrap" id="app"></div>
-
 <script>
-const VOCAB = [
+const V=[
   {de:"die Mutter",en:"mother",t:"f"},{de:"der Vater",en:"father",t:"f"},
   {de:"die Schwester",en:"sister",t:"f"},{de:"der Bruder",en:"brother",t:"f"},
   {de:"die Großmutter",en:"grandmother",t:"f"},{de:"der Großvater",en:"grandfather",t:"f"},
@@ -247,128 +133,207 @@ const VOCAB = [
   {de:"der Pullover",en:"jumper",t:"c"},{de:"die Mütze",en:"hat",t:"c"},
   {de:"das T-Shirt",en:"T-shirt",t:"c"},{de:"die Jeans",en:"jeans",t:"c"},
   {de:"der Gürtel",en:"belt",t:"c"},{de:"die Handschuhe",en:"gloves",t:"c"},
+  {de:"die Sonne",en:"sun",t:"w"},{de:"der Regen",en:"rain",t:"w"},
+  {de:"der Schnee",en:"snow",t:"w"},{de:"der Wind",en:"wind",t:"w"},
+  {de:"das Gewitter",en:"thunderstorm",t:"w"},{de:"der Nebel",en:"fog",t:"w"},
+  {de:"sonnig",en:"sunny",t:"w"},{de:"regnerisch",en:"rainy",t:"w"},
+  {de:"bewölkt",en:"cloudy",t:"w"},{de:"windig",en:"windy",t:"w"},
+  {de:"kalt",en:"cold",t:"w"},{de:"warm",en:"warm",t:"w"},
+  {de:"heiß",en:"hot",t:"w"},{de:"neblig",en:"foggy",t:"w"},
+  {de:"eins",en:"one",t:"n"},{de:"zwei",en:"two",t:"n"},
+  {de:"drei",en:"three",t:"n"},{de:"vier",en:"four",t:"n"},
+  {de:"fünf",en:"five",t:"n"},{de:"sechs",en:"six",t:"n"},
+  {de:"sieben",en:"seven",t:"n"},{de:"acht",en:"eight",t:"n"},
+  {de:"neun",en:"nine",t:"n"},{de:"zehn",en:"ten",t:"n"},
+  {de:"elf",en:"eleven",t:"n"},{de:"zwölf",en:"twelve",t:"n"},
+  {de:"zwanzig",en:"twenty",t:"n"},{de:"dreißig",en:"thirty",t:"n"},
+  {de:"hundert",en:"hundred",t:"n"},{de:"das Alter",en:"age",t:"n"},
+  {de:"das Jahr",en:"year",t:"n"},{de:"der Geburtstag",en:"birthday",t:"n"},
+  {de:"freundlich",en:"friendly",t:"ch"},{de:"lustig",en:"funny",t:"ch"},
+  {de:"nett",en:"nice",t:"ch"},{de:"klug",en:"clever",t:"ch"},
+  {de:"faul",en:"lazy",t:"ch"},{de:"fleißig",en:"hardworking",t:"ch"},
+  {de:"schüchtern",en:"shy",t:"ch"},{de:"mutig",en:"brave",t:"ch"},
+  {de:"ehrlich",en:"honest",t:"ch"},{de:"ruhig",en:"calm",t:"ch"},
+  {de:"laut",en:"loud",t:"ch"},{de:"witzig",en:"witty",t:"ch"},
+  {de:"arrogant",en:"arrogant",t:"ch"},{de:"lieb",en:"kind",t:"ch"},
+  {de:"der Hund",en:"dog",t:"an"},{de:"die Katze",en:"cat",t:"an"},
+  {de:"das Pferd",en:"horse",t:"an"},{de:"der Vogel",en:"bird",t:"an"},
+  {de:"die Maus",en:"mouse",t:"an"},{de:"der Fisch",en:"fish",t:"an"},
+  {de:"das Kaninchen",en:"rabbit",t:"an"},{de:"das Schwein",en:"pig",t:"an"},
+  {de:"die Kuh",en:"cow",t:"an"},{de:"das Schaf",en:"sheep",t:"an"},
+  {de:"der Löwe",en:"lion",t:"an"},{de:"der Elefant",en:"elephant",t:"an"},
+  {de:"der Affe",en:"monkey",t:"an"},{de:"die Schlange",en:"snake",t:"an"},
+  {de:"lesen",en:"reading",t:"h"},{de:"schwimmen",en:"swimming",t:"h"},
+  {de:"kochen",en:"cooking",t:"h"},{de:"tanzen",en:"dancing",t:"h"},
+  {de:"singen",en:"singing",t:"h"},{de:"zeichnen",en:"drawing",t:"h"},
+  {de:"spielen",en:"playing",t:"h"},{de:"reisen",en:"travelling",t:"h"},
+  {de:"wandern",en:"hiking",t:"h"},{de:"backen",en:"baking",t:"h"},
+  {de:"malen",en:"painting",t:"h"},{de:"Fußball spielen",en:"football",t:"h"},
+  {de:"Musik hören",en:"listening to music",t:"h"},{de:"fotografieren",en:"photography",t:"h"},
+  {de:"das Haus",en:"house",t:"ho"},{de:"die Wohnung",en:"flat",t:"ho"},
+  {de:"das Zimmer",en:"room",t:"ho"},{de:"das Schlafzimmer",en:"bedroom",t:"ho"},
+  {de:"das Badezimmer",en:"bathroom",t:"ho"},{de:"die Küche",en:"kitchen",t:"ho"},
+  {de:"das Wohnzimmer",en:"living room",t:"ho"},{de:"der Garten",en:"garden",t:"ho"},
+  {de:"die Treppe",en:"stairs",t:"ho"},{de:"das Fenster",en:"window",t:"ho"},
+  {de:"die Tür",en:"door",t:"ho"},{de:"der Keller",en:"cellar",t:"ho"},
+  {de:"die Garage",en:"garage",t:"ho"},{de:"das Esszimmer",en:"dining room",t:"ho"},
 ];
 
-const TL = {f:"Family",a:"Appearance",s:"School",c:"Clothes"};
-const TC = {f:"pill-f",a:"pill-a",s:"pill-s",c:"pill-c"};
+const TL={f:"👨‍👩‍👧 Family",a:"👀 Appearance",s:"📚 School",c:"👕 Clothes",
+          w:"🌤 Weather",n:"🔢 Numbers & Age",ch:"😊 Character",an:"🐾 Animals",h:"⚽ Hobbies",ho:"🏠 House"};
+const TC={f:"pf",a:"pa",s:"ps",c:"pc",w:"pw",n:"pn",ch:"pch",an:"pan",h:"ph",ho:"pho"};
+const PC=["#5540c0","#1a8050","#1a50b0","#b06010","#b02020","#106080","#801060","#408020","#203080","#804020","#106050","#501080"];
 
-const PC = ["#5540c0","#1a8050","#1a50b0","#b06010","#b02020",
-            "#106080","#801060","#408020","#203080","#804020","#106050","#501080"];
+let S={screen:"home",dir:"de-en",questions:[],answers:{},phase:"answering",retryAnswers:{},matchRight:[],selLeft:null,pairs:[],matchChecked:false};
+let lastFocused=null;
 
-let S = {screen:"home",questions:[],answers:{},checked:false,matchRight:[],selLeft:null,pairs:[]};
-
-function shuffle(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
-function getQs(){return shuffle(VOCAB).slice(0,12);}
+function shuf(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
+function getQs(){return shuf(V).slice(0,12);}
 function set(p){Object.assign(S,p);render();}
-function ok(q,a){const v=(a||"").trim().toLowerCase();return v&&q.en.toLowerCase().split("/").map(s=>s.trim()).includes(v);}
-function pill(t){return `<span class="pill ${TC[t]}">${TL[t]}</span>`;}
+function pill(t){return `<span class="pill ${TC[t]}">${TL[t].split(" ").slice(1).join(" ")}</span>`;}
+function stripArt(s){return s.replace(/^(die|der|das)\s+/i,"").trim();}
+function checkEN(q,a){const v=(a||"").trim().toLowerCase();return v&&q.en.toLowerCase().split("/").map(s=>s.trim()).includes(v);}
+function checkDE(q,a){const v=(a||"").trim().toLowerCase();if(!v)return false;const c=q.de.toLowerCase().trim();return v===c||v===stripArt(c).toLowerCase();}
+function chk(q,a){return S.dir==="de-en"?checkEN(q,a):checkDE(q,a);}
+function prompt(q){return S.dir==="de-en"?q.de:q.en;}
+function answerText(q){return S.dir==="de-en"?q.en:q.de;}
+
+window.insertAccent=function(ch){
+  if(!lastFocused)return;
+  const el=lastFocused,s=el.selectionStart,e=el.selectionEnd;
+  el.value=el.value.slice(0,s)+ch+el.value.slice(e);
+  el.selectionStart=el.selectionEnd=s+1;
+  const idx=+el.dataset.i;
+  if(el.dataset.retry)S.retryAnswers[idx]=el.value;
+  else S.answers[idx]=el.value;
+  el.focus();
+};
+
+function getFirstOk(){return new Set(S.questions.map((q,i)=>chk(q,S.answers[i]||"")?i:-1).filter(i=>i>=0));}
 
 function renderHome(){
-  return `
-  <div class="home-grid">
-    <div class="mode-card" id="bw">
-      <div class="ico">✏️</div>
-      <h2>Write the answer</h2>
-      <p>Type the English meaning for each German word</p>
-    </div>
-    <div class="mode-card" id="bm">
-      <div class="ico">🔗</div>
-      <h2>Match the words</h2>
-      <p>Link German words to their English meanings</p>
-    </div>
+  return `<div class="hgrid">
+    <div class="mcard" id="bw"><div class="ico">✏️</div><h2>Write the answer</h2><p>Type translations — switch between DE→EN and EN→DE</p></div>
+    <div class="mcard" id="bm"><div class="ico">🔗</div><h2>Match the words</h2><p>Link German words to their English meanings</p></div>
   </div>
-  <div class="topics-lbl">Topics covered</div>
-  <div class="topics-row">
-    <span class="pill pill-f">👨‍👩‍👧 Family</span>
-    <span class="pill pill-a">👀 Appearance</span>
-    <span class="pill pill-s">📚 School</span>
-    <span class="pill pill-c">👕 Clothes</span>
-  </div>`;}
+  <div class="tlbl">Topics covered</div>
+  <div class="trow">${Object.entries(TL).map(([k,v])=>`<span class="pill ${TC[k]}">${v}</span>`).join("")}</div>`;}
 
 function renderWrite(){
-  const {questions,answers,checked}=S;
-  let score=0;
-  if(checked) questions.forEach((q,i)=>{if(ok(q,answers[i]||""))score++;});
-  const cls=score>=10?"great":score>=7?"ok":"low";
-  const msg=score===12?"Ausgezeichnet! Perfect score! 🎉":score>=10?"Sehr gut! Great work! ⭐":score>=7?"Gut gemacht! Keep it up! 💪":"Keep practising — du schaffst das! 📖";
-  return `
-  <div class="topbar">
+  const {questions,answers,retryAnswers,phase,dir}=S;
+  const deEn=dir==="de-en";
+  const firstOk=getFirstOk();
+  const retryOk=new Set(questions.map((q,i)=>!firstOk.has(i)&&chk(q,retryAnswers[i]||"")?i:-1).filter(i=>i>=0));
+  const total=firstOk.size+retryOk.size;
+  const ph=`${deEn?"English meaning…":"Auf Deutsch…"}`;
+
+  let h=`<div class="topbar">
     <button class="btn btn-back" id="bh">← Back</button>
     <span class="topbar-title">Write the answer</span>
-    <span class="topbar-hint">German → English</span>
-  </div>
-  ${checked?`<div class="score-box ${cls}">
-    <div class="score-num">${score} / 12</div>
-    <div class="score-msg">${msg}</div>
-    <button class="btn btn-navy" id="br">New words →</button>
-  </div>`:""}
-  ${questions.map((q,i)=>{
-    const a=answers[i]||"";const c=checked?ok(q,a):null;
-    return `<div class="q-row${checked?(c?" correct":" wrong"):""}">
-      <div class="q-top">
-        <div class="q-num">${i+1}</div>
-        <span class="q-de">${q.de}</span>
+    <div style="margin-left:auto;display:flex;gap:5px">
+      <button class="tog${deEn?" on":""}" id="t-deen">DE → EN</button>
+      <button class="tog${!deEn?" on":""}" id="t-ende">EN → DE</button>
+    </div>
+  </div>`;
+
+  if(!deEn&&phase!=="done")
+    h+=`<div class="abar"><span>Special characters:</span>${["ä","ö","ü","ß","Ä","Ö","Ü"].map(c=>`<button class="abtn" onclick="insertAccent('${c}')">${c}</button>`).join("")}</div>`;
+
+  if(phase==="done"){
+    const cls=total>=10?"great":total>=7?"ok":"low";
+    const msg=total===12?"Ausgezeichnet! Perfect! 🎉":total>=10?"Sehr gut! Great work! ⭐":total>=7?"Gut gemacht! Keep it up! 💪":"Keep practising! 📖";
+    const missed=12-firstOk.size-retryOk.size;
+    h+=`<div class="sbox ${cls}">
+      <div class="snum">${total} / 12</div>
+      <div class="smsg">${msg}</div>
+      <div class="sbr">✅ ${firstOk.size} first time &nbsp;|&nbsp; 🔄 ${retryOk.size} second attempt &nbsp;|&nbsp; ❌ ${missed} missed</div>
+      <button class="btn btn-navy" id="br">New words →</button>
+    </div>`;
+    h+=questions.map((q,i)=>{
+      const fo=firstOk.has(i),ro=retryOk.has(i);
+      const rc=fo?"correct":ro?"retry-ok":"wrong";
+      const tk=fo?"✅":ro?"🔄":"❌";
+      const shownAns=fo?answers[i]:ro?retryAnswers[i]:answers[i];
+      return `<div class="qrow ${rc}">
+        <div class="qtop">
+          <div class="qnum">${i+1}</div>
+          <span class="qword">${prompt(q)}</span>
+          <span style="margin-left:auto;display:flex;gap:6px;align-items:center">${pill(q.t)}<span class="qtick">${tk}</span></span>
+        </div>
+        <input class="qinp" disabled value="${(shownAns||"").replace(/"/g,"&quot;")}">
+        ${!fo&&!ro?`<div class="qans">✓ ${answerText(q)}</div>`:""}
+        ${ro?`<div class="qrtry-note">Got it on the second attempt!</div>`:""}
+      </div>`;
+    }).join("");
+    h+=`<div class="ctr mt16"><button class="btn btn-navy" id="br">New words →</button></div>`;
+    return h;
+  }
+
+  if(phase==="answering"){
+    h+=questions.map((q,i)=>`<div class="qrow">
+      <div class="qtop">
+        <div class="qnum">${i+1}</div>
+        <span class="qword">${prompt(q)}</span>
         <span style="margin-left:auto">${pill(q.t)}</span>
       </div>
-      <div class="q-bot">
-        <input class="q-inp" id="a${i}" type="text" value="${a.replace(/"/g,"&quot;")}"
-          placeholder="English meaning…" data-i="${i}" ${checked?"disabled":""}>
-        ${checked?`<span class="q-tick">${c?"✅":"❌"}</span>`:""}
+      <input class="qinp" id="a${i}" type="text" value="${(answers[i]||"").replace(/"/g,"&quot;")}" placeholder="${ph}" data-i="${i}">
+    </div>`).join("");
+    h+=`<div class="ctr mt24"><button class="btn btn-amber" id="bc">Check answers</button></div>`;
+    return h;
+  }
+
+  // Retrying
+  const wrongIdxs=questions.map((_,i)=>i).filter(i=>!firstOk.has(i));
+  h+=`<div class="rbox"><div class="rbox-score">${firstOk.size}/12</div><div class="rbox-msg">correct so far — have another go at the ones you missed!</div></div>`;
+  if(firstOk.size>0){
+    h+=`<div class="sec-hdr">✅ Got these right</div>`;
+    h+=questions.map((q,i)=>firstOk.has(i)?`<div class="qrow correct" style="padding:10px 16px">
+      <div class="qtop" style="margin-bottom:0">
+        <div class="qnum">${i+1}</div>
+        <span class="qword" style="font-size:16px">${prompt(q)}</span>
+        <span style="margin-left:auto;display:flex;gap:6px;align-items:center">${pill(q.t)}<span class="qtick">✅</span></span>
       </div>
-      ${checked&&!c?`<div class="q-ans">✓ ${q.en}</div>`:""}
+    </div>`:"").join("");
+  }
+  h+=`<div class="sec-hdr">❌ Try these again</div>`;
+  h+=questions.map((q,i)=>{
+    if(firstOk.has(i))return "";
+    return `<div class="qrow wrong">
+      <div class="qtop">
+        <div class="qnum">${i+1}</div><span class="qword">${prompt(q)}</span>
+        <span style="margin-left:auto">${pill(q.t)}</span>
+      </div>
+      <div class="qans">✓ ${answerText(q)}</div>
+      <div class="qrtry-lbl">Try again →</div>
+      <input class="qinp" id="r${i}" type="text" value="${(retryAnswers[i]||"").replace(/"/g,"&quot;")}" placeholder="${ph}" data-i="${i}" data-retry="1">
     </div>`;
-  }).join("")}
-  ${!checked
-    ?`<div class="ctr mt28"><button class="btn btn-amber" id="bc">Check answers</button></div>`
-    :`<div class="ctr mt20"><button class="btn btn-navy" id="br">New words →</button></div>`}`;}
+  }).join("");
+  h+=`<div class="ctr mt24"><button class="btn btn-amber" id="brc">Check retries</button></div>`;
+  return h;
+}
 
 function renderMatch(){
-  const {questions,matchRight,selLeft,pairs,checked}=S;
+  const {questions,matchRight,selLeft,pairs,matchChecked}=S;
   const pm={};pairs.forEach((p,i)=>{pm[`L${p.l}`]=i;pm[`R${p.r}`]=i;});
-  let score=0;
-  if(checked) pairs.forEach(p=>{if(matchRight[p.r].orig===p.l)score++;});
+  let score=0;if(matchChecked)pairs.forEach(p=>{if(matchRight[p.r].orig===p.l)score++;});
   const cls=score>=10?"great":score>=7?"ok":"low";
   const msg=score===12?"Ausgezeichnet! 🎉":score>=10?"Sehr gut! ⭐":score>=7?"Gut gemacht! 💪":"Keep practising! 📖";
-
-  function lcls(i){
-    if(i===selLeft)return "mw sel";
-    if(`L${i}`in pm){if(checked){const p=pairs[pm[`L${i}`]];return matchRight[p.r].orig===i?"mw cor":"mw wrg";}return "mw paired";}
-    return "mw";
-  }
-  function rcls(i){
-    if(`R${i}`in pm){if(checked){const p=pairs[pm[`R${i}`]];return matchRight[i].orig===p.l?"mw cor":"mw wrg";}return "mw paired";}
-    return "mw";
-  }
-  function ps(key){
-    if(key in pm&&!checked){const c=PC[pm[key]%PC.length];return ` style="border-color:${c};background:${c}18;color:${c}"`;}
-    return "";
-  }
+  function lc(i){if(i===selLeft)return "mw sel";if(`L${i}`in pm){if(matchChecked){const p=pairs[pm[`L${i}`]];return matchRight[p.r].orig===i?"mw cor":"mw wrg";}return "mw";}return "mw";}
+  function rc(i){if(`R${i}`in pm){if(matchChecked){const p=pairs[pm[`R${i}`]];return matchRight[i].orig===p.l?"mw cor":"mw wrg";}return "mw";}return "mw";}
+  function ps(key){if(key in pm&&!matchChecked){const c=PC[pm[key]%PC.length];return ` style="border-color:${c};background:${c}18;color:${c}"`;}return "";}
   const hint=selLeft!==null?`Word ${selLeft+1} selected — now click an English word`:pairs.length===12?"All matched! Click Check answers":`${pairs.length} of 12 matched`;
-  return `
-  <div class="topbar">
+  return `<div class="topbar">
     <button class="btn btn-back" id="bh">← Back</button>
     <span class="topbar-title">Match the words</span>
   </div>
-  ${checked?`<div class="score-box ${cls}">
-    <div class="score-num">${score} / 12</div>
-    <div class="score-msg">${msg}</div>
-    <button class="btn btn-navy" id="br">New words →</button>
-  </div>`:""}
-  <div class="match-hint">${hint}</div>
-  <div class="match-grid">
-    <div class="match-col">
-      <div class="match-hdr">Deutsch</div>
-      ${questions.map((q,i)=>`<div class="${lcls(i)}"${ps(`L${i}`)} data-l="${i}">${q.de}</div>`).join("")}
-    </div>
-    <div class="match-col">
-      <div class="match-hdr">English</div>
-      ${matchRight.map((w,i)=>`<div class="${rcls(i)}"${ps(`R${i}`)} data-r="${i}">${w.en}</div>`).join("")}
-    </div>
+  ${matchChecked?`<div class="sbox ${cls}"><div class="snum">${score} / 12</div><div class="smsg">${msg}</div><button class="btn btn-navy" id="br">New words →</button></div>`:""}
+  <div class="mhint">${hint}</div>
+  <div class="mgrid">
+    <div class="mcol"><div class="mhdr">Deutsch</div>${questions.map((q,i)=>`<div class="${lc(i)}"${ps(`L${i}`)} data-l="${i}">${q.de}</div>`).join("")}</div>
+    <div class="mcol"><div class="mhdr">English</div>${matchRight.map((w,i)=>`<div class="${rc(i)}"${ps(`R${i}`)} data-r="${i}">${w.en}</div>`).join("")}</div>
   </div>
-  ${!checked
-    ?`<div class="ctr"><button class="btn btn-amber" id="bc" ${pairs.length<12?"disabled":""}>
-        ${pairs.length<12?`Check answers (${12-pairs.length} to go)`:"Check answers"}
-      </button></div>`
+  ${!matchChecked
+    ?`<div class="ctr"><button class="btn btn-amber" id="bc" ${pairs.length<12?"disabled":""}>${pairs.length<12?`Check answers (${12-pairs.length} to go)`:"Check answers"}</button></div>`
     :`<div class="ctr"><button class="btn btn-navy" id="br">New words →</button></div>`}`;}
 
 function render(){
@@ -380,45 +345,60 @@ function render(){
 }
 
 function bind(){
-  document.getElementById("bw")?.addEventListener("click",()=>set({screen:"write",questions:getQs(),answers:{},checked:false}));
-  document.getElementById("bm")?.addEventListener("click",()=>{
-    const qs=getQs();
-    set({screen:"match",questions:qs,matchRight:shuffle(qs.map((q,i)=>({en:q.en,orig:i}))),selLeft:null,pairs:[],checked:false});
-  });
+  document.getElementById("bw")?.addEventListener("click",()=>set({screen:"write",questions:getQs(),answers:{},retryAnswers:{},phase:"answering"}));
+  document.getElementById("bm")?.addEventListener("click",()=>{const qs=getQs();set({screen:"match",questions:qs,matchRight:shuf(qs.map((q,i)=>({en:q.en,orig:i}))),selLeft:null,pairs:[],matchChecked:false});});
   document.getElementById("bh")?.addEventListener("click",()=>set({screen:"home"}));
   document.getElementById("br")?.addEventListener("click",()=>set({screen:"home"}));
+  document.getElementById("t-deen")?.addEventListener("click",()=>{if(S.dir!=="de-en")set({dir:"de-en",answers:{},retryAnswers:{},phase:"answering"});});
+  document.getElementById("t-ende")?.addEventListener("click",()=>{if(S.dir!=="en-de")set({dir:"en-de",answers:{},retryAnswers:{},phase:"answering"});});
+
   document.getElementById("bc")?.addEventListener("click",()=>{
     if(S.screen==="write"){
       const ans={};S.questions.forEach((_,i)=>{ans[i]=document.getElementById(`a${i}`)?.value||"";});
-      set({answers:ans,checked:true});
-    } else set({checked:true});
+      set({answers:ans,phase:"retrying"});
+    } else set({matchChecked:true});
   });
-  document.querySelectorAll(".q-inp").forEach(el=>{
-    el.addEventListener("input",e=>{S.answers[+e.target.dataset.i]=e.target.value;});
+
+  document.getElementById("brc")?.addEventListener("click",()=>{
+    const ra={};S.questions.forEach((_,i)=>{const el=document.getElementById(`r${i}`);if(el)ra[i]=el.value||"";});
+    set({retryAnswers:ra,phase:"done"});
+  });
+
+  document.querySelectorAll(".qinp:not([disabled])").forEach(el=>{
+    el.addEventListener("focus",()=>{lastFocused=el;});
+    el.addEventListener("input",e=>{const idx=+e.target.dataset.i;if(e.target.dataset.retry)S.retryAnswers[idx]=e.target.value;else S.answers[idx]=e.target.value;});
     el.addEventListener("keydown",e=>{
-      if(e.key==="Enter"){const n=document.getElementById(`a${+el.dataset.i+1}`);if(n)n.focus();else document.getElementById("bc")?.focus();}
+      if(e.key!=="Enter")return;
+      const idx=+el.dataset.i,isRetry=!!el.dataset.retry;
+      if(isRetry){
+        const fo=getFirstOk();
+        const wi=S.questions.map((_,i)=>i).filter(i=>!fo.has(i));
+        const pos=wi.indexOf(idx),next=wi[pos+1];
+        if(next!==undefined)document.getElementById(`r${next}`)?.focus();
+        else document.getElementById("brc")?.focus();
+      } else {
+        const next=document.getElementById(`a${idx+1}`);
+        if(next)next.focus();else document.getElementById("bc")?.focus();
+      }
     });
   });
+
   document.querySelectorAll("[data-l]").forEach(el=>{
     el.addEventListener("click",()=>{
-      if(S.checked)return;
-      const i=+el.dataset.l;
-      const xi=S.pairs.findIndex(p=>p.l===i);
+      if(S.matchChecked)return;
+      const i=+el.dataset.l,xi=S.pairs.findIndex(p=>p.l===i);
       if(xi>=0){S.pairs.splice(xi,1);set({selLeft:i});return;}
       set({selLeft:S.selLeft===i?null:i});
     });
   });
   document.querySelectorAll("[data-r]").forEach(el=>{
     el.addEventListener("click",()=>{
-      if(S.checked||S.selLeft===null)return;
-      const r=+el.dataset.r;
-      const np=S.pairs.filter(p=>p.l!==S.selLeft&&p.r!==r);
-      np.push({l:S.selLeft,r});
-      set({pairs:np,selLeft:null});
+      if(S.matchChecked||S.selLeft===null)return;
+      const r=+el.dataset.r,np=S.pairs.filter(p=>p.l!==S.selLeft&&p.r!==r);
+      np.push({l:S.selLeft,r});set({pairs:np,selLeft:null});
     });
   });
 }
-
 render();
 </script>
 </body>
