@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deutsch Üben – German Vocabulary Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744;
+    --navy-light: #2a3a60;
+    --amber: #f0a500;
+    --amber-dark: #c88800;
+    --cream: #fdf9f3;
+    --cream-dark: #f3ece0;
+    --green: #2d7a4f;
+    --green-bg: #e8f5ee;
+    --red: #c0392b;
+    --red-bg: #fdecea;
+    --text: #1a2744;
+    --text-muted: #6b7280;
+    --border: #e2d9cc;
+    --white: #ffffff;
+    --shadow: 0 4px 16px rgba(26,39,68,0.10);
+    --shadow-sm: 0 2px 8px rgba(26,39,68,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--navy);
+    color: white;
+    text-align: center;
+    padding: 28px 20px 24px;
+  }
+  .header .flag { font-size: 40px; margin-bottom: 6px; }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .header p { font-size: 15px; opacity: 0.75; font-weight: 600; }
+
+  /* ── Layout ── */
+  .container { max-width: 640px; margin: 0 auto; padding: 28px 16px 48px; }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+
+  /* ── Buttons ── */
+  .btn {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 28px;
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s, opacity 0.12s;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary {
+    background: var(--navy);
+    color: white;
+    box-shadow: 0 4px 12px rgba(26,39,68,0.25);
+  }
+  .btn-primary:hover { background: var(--navy-light); }
+  .btn-amber {
+    background: var(--amber);
+    color: var(--navy);
+    box-shadow: 0 4px 12px rgba(240,165,0,0.30);
+  }
+  .btn-amber:hover { background: var(--amber-dark); }
+  .btn-outline {
+    background: transparent;
+    color: var(--navy);
+    border: 2px solid var(--navy);
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  .btn-outline:hover { background: var(--cream-dark); }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+  /* ── Topic pills ── */
+  .pill {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 99px;
+    border: 1.5px solid;
+  }
+  .pill-family  { background: #eee8ff; color: #4a3aaa; border-color: #9b8fdd; }
+  .pill-appear  { background: #e5f5ec; color: #1e6e40; border-color: #5db880; }
+  .pill-school  { background: #e3eeff; color: #1a4fa0; border-color: #6090dd; }
+  .pill-clothes { background: #fff4e0; color: #9a6000; border-color: #e0a830; }
+
+  /* ── Home screen ── */
+  .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 22px; }
+  .mode-card {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 24px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    border: 2px solid transparent;
+  }
+  .mode-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(26,39,68,0.14); border-color: var(--amber); }
+  .mode-card .icon { font-size: 36px; margin-bottom: 10px; }
+  .mode-card h2 { font-size: 17px; font-weight: 800; margin-bottom: 6px; color: var(--navy); }
+  .mode-card p { font-size: 13px; color: var(--text-muted); font-weight: 600; }
+  .topics-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; }
+  .topics-label { font-size: 13px; color: var(--text-muted); font-weight: 600; text-align: center; margin-bottom: 8px; }
+
+  /* ── Top bar ── */
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .topbar-title { font-size: 17px; font-weight: 800; color: var(--navy); }
+  .topbar-hint { margin-left: auto; font-size: 13px; color: var(--text-muted); font-weight: 600; }
+
+  /* ── Score banner ── */
+  .score-banner {
+    border-radius: 14px;
+    padding: 22px;
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  .score-banner.great { background: var(--green-bg); border: 2px solid #5db880; }
+  .score-banner.ok    { background: #fff8e3; border: 2px solid #e0a830; }
+  .score-banner.low   { background: var(--red-bg); border: 2px solid #e07070; }
+  .score-banner .score-num { font-size: 40px; font-weight: 800; margin-bottom: 4px; }
+  .score-banner.great .score-num { color: var(--green); }
+  .score-banner.ok    .score-num { color: #9a6000; }
+  .score-banner.low   .score-num { color: var(--red); }
+  .score-banner .score-msg { font-size: 15px; font-weight: 600; color: var(--text-muted); margin-bottom: 14px; }
+
+  /* ── Write mode question rows ── */
+  .q-row {
+    background: var(--white);
+    border-radius: 13px;
+    box-shadow: var(--shadow-sm);
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    border: 2px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .q-row.correct { border-color: #5db880; background: #f4fbf7; }
+  .q-row.wrong   { border-color: #e07070; background: #fff6f5; }
+  .q-row-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .q-num {
+    background: var(--navy);
+    color: white;
+    border-radius: 50%;
+    width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .q-german { font-size: 18px; font-weight: 800; color: var(--navy); }
+  .q-row-bottom { display: flex; align-items: center; gap: 10px; }
+  .q-input {
+    flex: 1;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 9px 13px;
+    border: 2px solid var(--border);
+    border-radius: 9px;
+    background: var(--cream);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .q-input:focus { border-color: var(--amber); background: white; }
+  .q-input:disabled { background: #f5f5f5; color: #888; }
+  .q-tick { font-size: 22px; flex-shrink: 0; }
+  .q-correct-ans { margin-top: 6px; font-size: 13px; font-weight: 700; color: var(--green); }
+
+  /* ── Match mode ── */
+  .match-header { font-size: 12px; font-weight: 800; color: var(--text-muted); text-align: center; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+  .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .match-col { display: flex; flex-direction: column; gap: 6px; }
+  .match-word {
+    padding: 11px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    border: 2px solid var(--border);
+    background: var(--cream-dark);
+    color: var(--navy);
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .match-word:hover { border-color: var(--navy); }
+  .match-word.selected { border-color: var(--navy); background: var(--navy); color: white; }
+  .match-word.paired { }
+  .match-word.correct-match { border-color: var(--green); background: var(--green-bg); color: var(--green); }
+  .match-word.wrong-match   { border-color: var(--red); background: var(--red-bg); color: var(--red); }
+  .match-hint { font-size: 13px; font-weight: 600; color: var(--text-muted); text-align: center; margin-bottom: 14px; min-height: 20px; }
+
+  .center { text-align: center; }
+  .mt16 { margin-top: 16px; }
+  .mt24 { margin-top: 24px; }
+  .divider { border: none; border-top: 1.5px solid var(--cream-dark); margin: 18px 0; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="flag">🇩🇪</div>
+  <h1>Deutsch Üben</h1>
+  <p>German vocabulary practice &middot; 12 words per round</p>
+</div>
+
+<div class="container" id="app"></div>
+
+<script>
+const VOCAB = [
+  {de:"die Mutter",en:"mother",t:"family"},
+  {de:"der Vater",en:"father",t:"family"},
+  {de:"die Schwester",en:"sister",t:"family"},
+  {de:"der Bruder",en:"brother",t:"family"},
+  {de:"die Großmutter",en:"grandmother",t:"family"},
+  {de:"der Großvater",en:"grandfather",t:"family"},
+  {de:"die Tante",en:"aunt",t:"family"},
+  {de:"der Onkel",en:"uncle",t:"family"},
+  {de:"die Cousine",en:"cousin",t:"family"},
+  {de:"die Eltern",en:"parents",t:"family"},
+  {de:"der Sohn",en:"son",t:"family"},
+  {de:"die Tochter",en:"daughter",t:"family"},
+  {de:"das Kind",en:"child",t:"family"},
+  {de:"die Geschwister",en:"siblings",t:"family"},
+  {de:"groß",en:"tall",t:"appear"},
+  {de:"klein",en:"short",t:"appear"},
+  {de:"schlank",en:"slim",t:"appear"},
+  {de:"dick",en:"fat",t:"appear"},
+  {de:"schön",en:"beautiful",t:"appear"},
+  {de:"hässlich",en:"ugly",t:"appear"},
+  {de:"jung",en:"young",t:"appear"},
+  {de:"alt",en:"old",t:"appear"},
+  {de:"blond",en:"blonde",t:"appear"},
+  {de:"lockig",en:"curly",t:"appear"},
+  {de:"glatt",en:"straight",t:"appear"},
+  {de:"die Augen",en:"eyes",t:"appear"},
+  {de:"die Haare",en:"hair",t:"appear"},
+  {de:"rothaarig",en:"red-haired",t:"appear"},
+  {de:"Mathematik",en:"Maths",t:"school"},
+  {de:"Englisch",en:"English",t:"school"},
+  {de:"Deutsch",en:"German",t:"school"},
+  {de:"Naturwissenschaften",en:"Science",t:"school"},
+  {de:"Geschichte",en:"History",t:"school"},
+  {de:"Erdkunde",en:"Geography",t:"school"},
+  {de:"Kunst",en:"Art",t:"school"},
+  {de:"Musik",en:"Music",t:"school"},
+  {de:"Sport",en:"PE",t:"school"},
+  {de:"Informatik",en:"Computing",t:"school"},
+  {de:"Französisch",en:"French",t:"school"},
+  {de:"Religion",en:"RE",t:"school"},
+  {de:"Biologie",en:"Biology",t:"school"},
+  {de:"Chemie",en:"Chemistry",t:"school"},
+  {de:"das Hemd",en:"shirt",t:"clothes"},
+  {de:"die Hose",en:"trousers",t:"clothes"},
+  {de:"der Rock",en:"skirt",t:"clothes"},
+  {de:"das Kleid",en:"dress",t:"clothes"},
+  {de:"die Jacke",en:"jacket",t:"clothes"},
+  {de:"der Mantel",en:"coat",t:"clothes"},
+  {de:"die Schuhe",en:"shoes",t:"clothes"},
+  {de:"die Socken",en:"socks",t:"clothes"},
+  {de:"der Pullover",en:"jumper",t:"clothes"},
+  {de:"die Mütze",en:"hat",t:"clothes"},
+  {de:"das T-Shirt",en:"T-shirt",t:"clothes"},
+  {de:"die Jeans",en:"jeans",t:"clothes"},
+  {de:"der Gürtel",en:"belt",t:"clothes"},
+  {de:"die Handschuhe",en:"gloves",t:"clothes"},
+];
+
+const TOPIC_LABELS = {family:"👨‍👩‍👧 Family",appear:"👀 Appearance",school:"📚 School",clothes:"👕 Clothes"};
+const TOPIC_CLASS  = {family:"pill-family",appear:"pill-appear",school:"pill-school",clothes:"pill-clothes"};
+
+const PAIR_COLORS = [
+  "#6c3fc5","#1a7a4a","#1a4fa0","#b85c00","#9a1a1a",
+  "#1a6a6a","#6a1a6a","#3a6a1a","#1a3a7a","#7a3a1a",
+  "#1a5a4a","#5a1a4a"
+];
+
+let state = {
+  screen:"home",
+  questions:[],
+  answers:{},
+  checked:false,
+  matchRight:[],
+  selLeft:null,
+  pairs:[]
+};
+
+function shuffle(a){
+  const arr=[...a];
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+function getQuestions(){ return shuffle(VOCAB).slice(0,12); }
+
+function setState(patch){ Object.assign(state,patch); render(); }
+
+function checkWrite(q,ans){
+  const a=(ans||"").trim().toLowerCase();
+  if(!a) return false;
+  return q.en.toLowerCase().split("/").map(s=>s.trim()).includes(a);
+}
+
+function topicPill(t){
+  return `<span class="pill ${TOPIC_CLASS[t]}">${TOPIC_LABELS[t].split(" ").slice(1).join(" ")}</span>`;
+}
+
+// ── Screens ──────────────────────────────────────────────────────────
+
+function renderHome(){
+  return `
+    <div class="home-grid">
+      <div class="mode-card" id="btn-write">
+        <div class="icon">✏️</div>
+        <h2>Write the answer</h2>
+        <p>Type the English meaning for each German word</p>
+      </div>
+      <div class="mode-card" id="btn-match">
+        <div class="icon">🔗</div>
+        <h2>Match the words</h2>
+        <p>Link German words to their English meanings</p>
+      </div>
+    </div>
+    <div class="topics-label">Topics covered</div>
+    <div class="topics-row">
+      ${Object.entries(TOPIC_LABELS).map(([k,v])=>`<span class="pill ${TOPIC_CLASS[k]}">${v}</span>`).join("")}
+    </div>`;
+}
+
+function renderWrite(){
+  const {questions,answers,checked}=state;
+  let score=0;
+  if(checked) questions.forEach((q,i)=>{ if(checkWrite(q,answers[i]||"")) score++; });
+  const cls = score>=10?"great":score>=7?"ok":"low";
+  const msg = score===12?"Ausgezeichnet! Perfect score! 🎉"
+             :score>=10?"Sehr gut! Great work! ⭐"
+             :score>=7 ?"Gut gemacht! Keep it up! 💪"
+             :"Keep practising — du schaffst das! 📖";
+
+  return `
+    <div class="topbar">
+      <button class="btn btn-outline" id="btn-home">← Back</button>
+      <span class="topbar-title">Write the answer</span>
+      <span class="topbar-hint">German → English</span>
+    </div>
+    ${checked?`
+    <div class="score-banner ${cls}">
+      <div class="score-num">${score} / 12</div>
+      <div class="score-msg">${msg}</div>
+      <button class="btn btn-primary" id="btn-reset">New words →</button>
+    </div>`:""}
+    ${questions.map((q,i)=>{
+      const ans=answers[i]||"";
+      const correct=checked?checkWrite(q,ans):null;
+      return `
+      <div class="q-row${checked?(correct?" correct":" wrong"):""}">
+        <div class="q-row-top">
+          <div class="q-num">${i+1}</div>
+          <span class="q-german">${q.de}</span>
+          <span style="margin-left:auto">${topicPill(q.t)}</span>
+        </div>
+        <div class="q-row-bottom">
+          <input class="q-input" id="ans-${i}" type="text"
+            value="${ans.replace(/"/g,'&quot;')}"
+            placeholder="English meaning…"
+            data-idx="${i}"
+            ${checked?"disabled":""}>
+          ${checked?`<span class="q-tick">${correct?"✅":"❌"}</span>`:""}
+        </div>
+        ${checked&&!correct?`<div class="q-correct-ans">✓ ${q.en}</div>`:""}
+      </div>`;
+    }).join("")}
+    ${!checked?`<div class="center mt24"><button class="btn btn-amber" id="btn-check">Check answers</button></div>`
+              :`<div class="center mt16"><button class="btn btn-primary" id="btn-reset">New words →</button></div>`}`;
+}
+
+function renderMatch(){
+  const {questions,matchRight,selLeft,pairs,checked}=state;
+  const pairMap={};
+  pairs.forEach((p,i)=>{ pairMap[`L${p.l}`]=i; pairMap[`R${p.r}`]=i; });
+
+  let score=0;
+  if(checked) pairs.forEach(p=>{ if(matchRight[p.r].orig===p.l) score++; });
+  const cls=score>=10?"great":score>=7?"ok":"low";
+  const msg=score===12?"Ausgezeichnet! 🎉":score>=10?"Sehr gut! ⭐":score>=7?"Gut gemacht! 💪":"Keep practising! 📖";
+
+  function leftCls(i){
+    if(i===selLeft) return "match-word selected";
+    if(`L${i}` in pairMap){
+      if(checked){ const p=pairs[pairMap[`L${i}`]]; return matchRight[p.r].orig===i?"match-word correct-match":"match-word wrong-match"; }
+      return "match-word paired";
+    }
+    return "match-word";
+  }
+  function rightCls(i){
+    if(`R${i}` in pairMap){
+      if(checked){ const p=pairs[pairMap[`R${i}`]]; return matchRight[i].orig===p.l?"match-word correct-match":"match-word wrong-match"; }
+      return "match-word paired";
+    }
+    return "match-word";
+  }
+  function pairStyle(key){
+    if(key in pairMap && !checked){
+      const c=PAIR_COLORS[pairMap[key]%PAIR_COLORS.length];
+      return `style="border-color:${c};background:${c}18;color:${c}"`;
+    }
+    return "";
+  }
+
+  const hint = selLeft!==null
+    ? `Word ${selLeft+1} selected — now click an English word`
+    : pairs.length===12 ? "All matched! Click Check answers"
+    : `${pairs.length} of 12 matched — click a German word to start`;
+
+  return `
+    <div class="topbar">
+      <button class="btn btn-outline" id="btn-home">← Back</button>
+      <span class="topbar-title">Match the words</span>
+    </div>
+    ${checked?`
+    <div class="score-banner ${cls}">
+      <div class="score-num">${score} / 12</div>
+      <div class="score-msg">${msg}</div>
+      <button class="btn btn-primary" id="btn-reset">New words →</button>
+    </div>`:""}
+    <div class="match-hint">${hint}</div>
+    <div class="match-grid">
+      <div class="match-col">
+        <div class="match-header">Deutsch</div>
+        ${questions.map((q,i)=>`
+          <div class="${leftCls(i)}" ${pairStyle(`L${i}`)} data-left="${i}">${q.de}</div>`).join("")}
+      </div>
+      <div class="match-col">
+        <div class="match-header">English</div>
+        ${matchRight.map((item,i)=>`
+          <div class="${rightCls(i)}" ${pairStyle(`R${i}`)} data-right="${i}">${item.en}</div>`).join("")}
+      </div>
+    </div>
+    ${!checked?`<div class="center">
+      <button class="btn btn-amber" id="btn-check" ${pairs.length<12?"disabled":""}>
+        ${pairs.length<12?`Check answers (${12-pairs.length} to go)`:"Check answers"}
+      </button>
+    </div>`:`<div class="center">
+      <button class="btn btn-primary" id="btn-reset">New words →</button>
+    </div>`}`;
+}
+
+// ── Render & Events ───────────────────────────────────────────────────
+
+function render(){
+  const app=document.getElementById("app");
+  if(state.screen==="home")  app.innerHTML=renderHome();
+  if(state.screen==="write") app.innerHTML=renderWrite();
+  if(state.screen==="match") app.innerHTML=renderMatch();
+  attachEvents();
+}
+
+function attachEvents(){
+  document.getElementById("btn-write")?.addEventListener("click",()=>{
+    setState({screen:"write",questions:getQuestions(),answers:{},checked:false});
+  });
+  document.getElementById("btn-match")?.addEventListener("click",()=>{
+    const qs=getQuestions();
+    setState({screen:"match",questions:qs,
+      matchRight:shuffle(qs.map((q,i)=>({en:q.en,orig:i}))),
+      selLeft:null,pairs:[],checked:false});
+  });
+  document.getElementById("btn-home")?.addEventListener("click",()=>setState({screen:"home"}));
+  document.getElementById("btn-reset")?.addEventListener("click",()=>setState({screen:"home"}));
+
+  document.getElementById("btn-check")?.addEventListener("click",()=>{
+    if(state.screen==="write"){
+      const ans={};
+      state.questions.forEach((_,i)=>{ ans[i]=document.getElementById(`ans-${i}`)?.value||""; });
+      setState({answers:ans,checked:true});
+    } else {
+      setState({checked:true});
+    }
+  });
+
+  document.querySelectorAll(".q-input").forEach(inp=>{
+    inp.addEventListener("input",e=>{ state.answers[+e.target.dataset.idx]=e.target.value; });
+    inp.addEventListener("keydown",e=>{
+      if(e.key==="Enter"){
+        const next=document.getElementById(`ans-${+inp.dataset.idx+1}`);
+        if(next) next.focus(); else document.getElementById("btn-check")?.focus();
+      }
+    });
+  });
+
+  document.querySelectorAll("[data-left]").forEach(el=>{
+    el.addEventListener("click",()=>{
+      if(state.checked) return;
+      const i=+el.dataset.left;
+      const existIdx=state.pairs.findIndex(p=>p.l===i);
+      if(existIdx>=0){
+        state.pairs.splice(existIdx,1);
+        setState({selLeft:i});
+        return;
+      }
+      setState({selLeft:state.selLeft===i?null:i});
+    });
+  });
+
+  document.querySelectorAll("[data-right]").forEach(el=>{
+    el.addEventListener("click",()=>{
+      if(state.checked||state.selLeft===null) return;
+      const r=+el.dataset.right;
+      const newPairs=state.pairs.filter(p=>p.l!==state.selLeft&&p.r!==r);
+      newPairs.push({l:state.selLeft,r});
+      setState({pairs:newPairs,selLeft:null});
+    });
+  });
+}
+
+render();
+</script>
+</body>
+</html>
