@@ -1,0 +1,324 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);background:transparent}
+input{font-family:var(--font-sans);font-size:14px;width:100%;padding:7px 10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);outline:none}
+input:focus{border-color:var(--color-border-primary);box-shadow:0 0 0 2px rgba(100,100,200,0.12)}
+input:disabled{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+button{font-family:var(--font-sans);cursor:pointer;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);padding:8px 18px;font-size:13px;font-weight:500;transition:background 0.15s,transform 0.1s}
+button:hover{background:var(--color-background-secondary)}
+button:active{transform:scale(0.98)}
+.pill{display:inline-block;font-size:11px;font-weight:500;padding:2px 8px;border-radius:99px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:16px}
+.q-row{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:12px 14px;margin-bottom:8px;transition:border-color 0.2s}
+.q-row.correct{border-color:#1D9E75;background:#E1F5EE}
+.q-row.wrong{border-color:#D85A30;background:#FAECE7}
+.match-word{border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:9px 12px;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;text-align:center;background:var(--color-background-secondary);color:var(--color-text-primary);user-select:none}
+.match-word:hover{border-color:var(--color-border-primary)}
+.match-word.selected{border-color:#534AB7;background:#EEEDFE;color:#3C3489}
+.match-word.paired{border-color:transparent}
+.match-word.correct-match{border-color:#1D9E75;background:#E1F5EE;color:#085041}
+.match-word.wrong-match{border-color:#D85A30;background:#FAECE7;color:#4A1B0C}
+.score-bar{text-align:center;padding:18px;border-radius:var(--border-radius-lg);margin-bottom:16px}
+.score-bar.great{background:#E1F5EE;border:0.5px solid #1D9E75}
+.score-bar.ok{background:#FAEEDA;border:0.5px solid #BA7517}
+.score-bar.low{background:#FAECE7;border:0.5px solid #D85A30}
+</style>
+
+<div id="root" style="padding:8px 0 16px"></div>
+
+<script>
+const VOCAB = [
+  {de:"die Mutter",en:"mother",t:"Family"},
+  {de:"der Vater",en:"father",t:"Family"},
+  {de:"die Schwester",en:"sister",t:"Family"},
+  {de:"der Bruder",en:"brother",t:"Family"},
+  {de:"die Großmutter",en:"grandmother",t:"Family"},
+  {de:"der Großvater",en:"grandfather",t:"Family"},
+  {de:"die Tante",en:"aunt",t:"Family"},
+  {de:"der Onkel",en:"uncle",t:"Family"},
+  {de:"die Cousine",en:"cousin",t:"Family"},
+  {de:"die Eltern",en:"parents",t:"Family"},
+  {de:"der Sohn",en:"son",t:"Family"},
+  {de:"die Tochter",en:"daughter",t:"Family"},
+  {de:"das Kind",en:"child",t:"Family"},
+  {de:"die Geschwister",en:"siblings",t:"Family"},
+  {de:"groß",en:"tall",t:"Appearance"},
+  {de:"klein",en:"short",t:"Appearance"},
+  {de:"schlank",en:"slim",t:"Appearance"},
+  {de:"dick",en:"fat",t:"Appearance"},
+  {de:"schön",en:"beautiful",t:"Appearance"},
+  {de:"hässlich",en:"ugly",t:"Appearance"},
+  {de:"jung",en:"young",t:"Appearance"},
+  {de:"alt",en:"old",t:"Appearance"},
+  {de:"blond",en:"blonde",t:"Appearance"},
+  {de:"lockig",en:"curly",t:"Appearance"},
+  {de:"glatt",en:"straight",t:"Appearance"},
+  {de:"die Augen",en:"eyes",t:"Appearance"},
+  {de:"die Haare",en:"hair",t:"Appearance"},
+  {de:"rothaarig",en:"red-haired",t:"Appearance"},
+  {de:"Mathematik",en:"Maths",t:"School"},
+  {de:"Englisch",en:"English",t:"School"},
+  {de:"Deutsch",en:"German",t:"School"},
+  {de:"Naturwissenschaften",en:"Science",t:"School"},
+  {de:"Geschichte",en:"History",t:"School"},
+  {de:"Erdkunde",en:"Geography",t:"School"},
+  {de:"Kunst",en:"Art",t:"School"},
+  {de:"Musik",en:"Music",t:"School"},
+  {de:"Sport",en:"PE",t:"School"},
+  {de:"Informatik",en:"Computing",t:"School"},
+  {de:"Französisch",en:"French",t:"School"},
+  {de:"Religion",en:"RE",t:"School"},
+  {de:"Biologie",en:"Biology",t:"School"},
+  {de:"Chemie",en:"Chemistry",t:"School"},
+  {de:"das Hemd",en:"shirt",t:"Clothes"},
+  {de:"die Hose",en:"trousers",t:"Clothes"},
+  {de:"der Rock",en:"skirt",t:"Clothes"},
+  {de:"das Kleid",en:"dress",t:"Clothes"},
+  {de:"die Jacke",en:"jacket",t:"Clothes"},
+  {de:"der Mantel",en:"coat",t:"Clothes"},
+  {de:"die Schuhe",en:"shoes",t:"Clothes"},
+  {de:"die Socken",en:"socks",t:"Clothes"},
+  {de:"der Pullover",en:"jumper",t:"Clothes"},
+  {de:"die Mütze",en:"hat",t:"Clothes"},
+  {de:"das T-Shirt",en:"T-shirt",t:"Clothes"},
+  {de:"die Jeans",en:"jeans",t:"Clothes"},
+  {de:"der Gürtel",en:"belt",t:"Clothes"},
+  {de:"die Handschuhe",en:"gloves",t:"Clothes"},
+];
+
+const TOPIC_COLORS = {
+  Family:  {bg:"#EEEDFE",border:"#534AB7",text:"#3C3489"},
+  Appearance:{bg:"#E1F5EE",border:"#1D9E75",text:"#085041"},
+  School:  {bg:"#E6F1FB",border:"#185FA5",text:"#0C447C"},
+  Clothes: {bg:"#FAEEDA",border:"#BA7517",text:"#633806"},
+};
+
+const PAIR_COLORS = ["#534AB7","#1D9E75","#185FA5","#BA7517","#A32D2D","#993C1D","#3B6D11","#0F6E56","#72243E","#3949AB","#5F5E5A","#185FA5"];
+
+function shuffle(a){const arr=[...a];for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
+
+function getQuestions(){return shuffle(VOCAB).slice(0,12)}
+
+let state = {screen:"home", questions:[], answers:{}, checked:false, matchRight:[], selLeft:null, pairs:[]};
+
+function setState(patch){Object.assign(state,patch);render()}
+
+function checkWrite(q,ans){
+  const a=ans.trim().toLowerCase();
+  const valids=q.en.toLowerCase().split("/").map(s=>s.trim());
+  return valids.includes(a);
+}
+
+function render(){
+  const root=document.getElementById("root");
+  if(state.screen==="home") root.innerHTML=renderHome();
+  else if(state.screen==="write") root.innerHTML=renderWrite();
+  else if(state.screen==="match") root.innerHTML=renderMatch();
+  attachEvents();
+}
+
+function renderHome(){
+  return `
+  <div style="max-width:560px;margin:0 auto;padding:0 8px">
+    <div style="text-align:center;padding:24px 16px 20px">
+      <div style="font-size:32px;margin-bottom:8px">🇩🇪</div>
+      <h2 style="font-size:22px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px">Deutsch Üben</h2>
+      <p style="font-size:14px;color:var(--color-text-secondary)">German vocabulary practice &middot; 12 words per round</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+      <div class="card" style="text-align:center;cursor:pointer;padding:20px 12px" id="btn-write">
+        <div style="font-size:24px;margin-bottom:8px">✏️</div>
+        <div style="font-weight:500;font-size:14px;margin-bottom:4px">Write the answer</div>
+        <div style="font-size:12px;color:var(--color-text-secondary)">Type the English for each German word</div>
+      </div>
+      <div class="card" style="text-align:center;cursor:pointer;padding:20px 12px" id="btn-match">
+        <div style="font-size:24px;margin-bottom:8px">🔗</div>
+        <div style="font-weight:500;font-size:14px;margin-bottom:4px">Match the words</div>
+        <div style="font-size:12px;color:var(--color-text-secondary)">Link German words to their English meanings</div>
+      </div>
+    </div>
+    <div style="border-top:0.5px solid var(--color-border-tertiary);padding-top:14px">
+      <p style="font-size:12px;color:var(--color-text-secondary);text-align:center;margin-bottom:10px">Topics covered</p>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">
+        ${Object.entries(TOPIC_COLORS).map(([t,c])=>`<span class="pill" style="background:${c.bg};color:${c.text};border:0.5px solid ${c.border}">${t}</span>`).join("")}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderWrite(){
+  const {questions,answers,checked}=state;
+  let score=0;
+  if(checked) questions.forEach((q,i)=>{if(checkWrite(q,answers[i]||""))score++});
+  const scoreClass=score>=10?"great":score>=7?"ok":"low";
+  const scoreMsg=score===12?"Ausgezeichnet! Perfect! 🎉":score>=10?"Sehr gut! Great work!":score>=7?"Gut gemacht! Keep it up!":"Keep practising — du schaffst das!";
+
+  return `
+  <div style="max-width:580px;margin:0 auto;padding:0 8px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <button id="btn-home" style="padding:6px 12px;font-size:12px">← Back</button>
+      <span style="font-size:14px;font-weight:500">Write the answer</span>
+      <span style="margin-left:auto;font-size:12px;color:var(--color-text-secondary)">German → English</span>
+    </div>
+    ${checked?`<div class="score-bar ${scoreClass}">
+      <div style="font-size:26px;font-weight:500;margin-bottom:4px">${score} / 12</div>
+      <div style="font-size:13px;color:var(--color-text-secondary)">${scoreMsg}</div>
+      <button id="btn-reset" style="margin-top:12px">New words →</button>
+    </div>`:""}
+    ${questions.map((q,i)=>{
+      const ans=answers[i]||"";
+      const correct=checked?checkWrite(q,ans):null;
+      return `<div class="q-row ${checked?(correct?"correct":"wrong"):""}">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span style="font-size:11px;font-weight:500;color:var(--color-text-secondary);min-width:18px">${i+1}.</span>
+          <span style="font-size:15px;font-weight:500;color:var(--color-text-primary)">${q.de}</span>
+          <span class="pill" style="margin-left:auto;background:${TOPIC_COLORS[q.t].bg};color:${TOPIC_COLORS[q.t].text};border:0.5px solid ${TOPIC_COLORS[q.t].border}">${q.t}</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="text" id="ans-${i}" value="${ans.replace(/"/g,'&quot;')}" placeholder="English meaning…" ${checked?"disabled":""} data-idx="${i}">
+          ${checked?`<span style="font-size:16px;flex-shrink:0">${correct?"✅":"❌"}</span>`:""}
+        </div>
+        ${checked&&!correct?`<div style="font-size:12px;color:#0F6E56;font-weight:500;margin-top:6px">✓ ${q.en}</div>`:""}
+      </div>`;
+    }).join("")}
+    ${!checked?`<div style="text-align:center;margin-top:16px">
+      <button id="btn-check" style="padding:10px 28px;font-size:14px;font-weight:500">Check answers</button>
+    </div>`:`<div style="text-align:center;margin-top:8px">
+      <button id="btn-reset" style="padding:10px 28px;font-size:14px;font-weight:500">New words →</button>
+    </div>`}
+  </div>`;
+}
+
+function renderMatch(){
+  const {questions,matchRight,selLeft,pairs,checked}=state;
+  const pairMap={};pairs.forEach((p,i)=>{pairMap[`L${p.l}`]=i;pairMap[`R${p.r}`]=i;});
+  let score=0;
+  if(checked) pairs.forEach(p=>{if(matchRight[p.r].orig===p.l)score++});
+  const scoreClass=score>=10?"great":score>=7?"ok":"low";
+  const scoreMsg=score===12?"Ausgezeichnet! 🎉":score>=10?"Sehr gut!":score>=7?"Gut gemacht!":"Keep practising!";
+
+  function leftClass(i){
+    if(i===selLeft)return "match-word selected";
+    if(`L${i}`in pairMap){
+      if(checked){const p=pairs[pairMap[`L${i}`]];return matchRight[p.r].orig===i?"match-word correct-match":"match-word wrong-match"}
+      return "match-word paired";
+    }
+    return "match-word";
+  }
+  function rightClass(i){
+    if(`R${i}`in pairMap){
+      if(checked){const p=pairs[pairMap[`R${i}`]];return matchRight[i].orig===p.l?"match-word correct-match":"match-word wrong-match"}
+      return "match-word paired";
+    }
+    if(selLeft!==null)return "match-word";
+    return "match-word";
+  }
+  function leftStyle(i){
+    if(`L${i}`in pairMap&&!checked){const pi=pairMap[`L${i}`];return `background:${PAIR_COLORS[pi%PAIR_COLORS.length]}22;border-color:${PAIR_COLORS[pi%PAIR_COLORS.length]};color:${PAIR_COLORS[pi%PAIR_COLORS.length]}`}
+    return "";
+  }
+  function rightStyle(i){
+    if(`R${i}`in pairMap&&!checked){const pi=pairMap[`R${i}`];return `background:${PAIR_COLORS[pi%PAIR_COLORS.length]}22;border-color:${PAIR_COLORS[pi%PAIR_COLORS.length]};color:${PAIR_COLORS[pi%PAIR_COLORS.length]}`}
+    return "";
+  }
+
+  const hint=selLeft!==null?`Word ${selLeft+1} selected — now click an English word`:`${pairs.length}/12 matched`;
+
+  return `
+  <div style="max-width:600px;margin:0 auto;padding:0 8px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+      <button id="btn-home" style="padding:6px 12px;font-size:12px">← Back</button>
+      <span style="font-size:14px;font-weight:500">Match the words</span>
+    </div>
+    ${checked?`<div class="score-bar ${scoreClass}">
+      <div style="font-size:26px;font-weight:500;margin-bottom:4px">${score} / 12</div>
+      <div style="font-size:13px;color:var(--color-text-secondary)">${scoreMsg}</div>
+      <button id="btn-reset" style="margin-top:12px">New words →</button>
+    </div>`:`<p style="font-size:12px;color:var(--color-text-secondary);text-align:center;margin-bottom:12px">${hint}</p>`}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
+      <div>
+        <p style="font-size:11px;font-weight:500;color:var(--color-text-secondary);text-align:center;margin-bottom:8px;letter-spacing:0.05em">DEUTSCH</p>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          ${questions.map((q,i)=>`<div class="${leftClass(i)}" style="${leftStyle(i)}" data-left="${i}">${q.de}</div>`).join("")}
+        </div>
+      </div>
+      <div>
+        <p style="font-size:11px;font-weight:500;color:var(--color-text-secondary);text-align:center;margin-bottom:8px;letter-spacing:0.05em">ENGLISH</p>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          ${matchRight.map((item,i)=>`<div class="${rightClass(i)}" style="${rightStyle(i)}" data-right="${i}">${item.en}</div>`).join("")}
+        </div>
+      </div>
+    </div>
+    ${!checked?`<div style="text-align:center">
+      <button id="btn-check" style="padding:10px 28px;font-size:14px;font-weight:500" ${pairs.length<12?"disabled":""}>
+        ${pairs.length<12?`Check answers (${12-pairs.length} left)`:"Check answers"}
+      </button>
+    </div>`:`<div style="text-align:center">
+      <button id="btn-reset" style="padding:10px 28px;font-size:14px;font-weight:500">New words →</button>
+    </div>`}
+  </div>`;
+}
+
+function attachEvents(){
+  document.getElementById("btn-write")?.addEventListener("click",()=>{
+    const qs=getQuestions();
+    setState({screen:"write",questions:qs,answers:{},checked:false});
+  });
+  document.getElementById("btn-match")?.addEventListener("click",()=>{
+    const qs=getQuestions();
+    const right=shuffle(qs.map((q,i)=>({en:q.en,orig:i})));
+    setState({screen:"match",questions:qs,matchRight:right,selLeft:null,pairs:[],checked:false});
+  });
+  document.getElementById("btn-home")?.addEventListener("click",()=>setState({screen:"home"}));
+  document.getElementById("btn-reset")?.addEventListener("click",()=>setState({screen:"home"}));
+
+  document.getElementById("btn-check")?.addEventListener("click",()=>{
+    if(state.screen==="write"){
+      const ans={};
+      state.questions.forEach((_,i)=>{ans[i]=document.getElementById(`ans-${i}`)?.value||""});
+      setState({answers:ans,checked:true});
+    } else {
+      setState({checked:true});
+    }
+  });
+
+  document.querySelectorAll("input[data-idx]").forEach(inp=>{
+    inp.addEventListener("input",e=>{
+      state.answers[+e.target.dataset.idx]=e.target.value;
+    });
+    inp.addEventListener("keydown",e=>{
+      if(e.key==="Enter"){
+        const next=document.getElementById(`ans-${+inp.dataset.idx+1}`);
+        if(next)next.focus();
+      }
+    });
+  });
+
+  document.querySelectorAll("[data-left]").forEach(el=>{
+    el.addEventListener("click",()=>{
+      if(state.checked)return;
+      const i=+el.dataset.left;
+      const existPairIdx=state.pairs.findIndex(p=>p.l===i);
+      if(existPairIdx>=0){
+        const newPairs=state.pairs.filter((_,pi)=>pi!==existPairIdx);
+        setState({pairs:newPairs,selLeft:i});
+        return;
+      }
+      setState({selLeft:state.selLeft===i?null:i});
+    });
+  });
+
+  document.querySelectorAll("[data-right]").forEach(el=>{
+    el.addEventListener("click",()=>{
+      if(state.checked||state.selLeft===null)return;
+      const r=+el.dataset.right;
+      const newPairs=state.pairs.filter(p=>p.l!==state.selLeft&&p.r!==r);
+      newPairs.push({l:state.selLeft,r});
+      setState({pairs:newPairs,selLeft:null});
+    });
+  });
+}
+
+render();
+</script>
